@@ -36,42 +36,41 @@ else{
 }
  
 
-  submit.onclick=function(){
-    let newPro={
-      title:title.value.toLowerCase(),
-      price:price.value,
-      taxes:taxes.value,
-      ads:ads.value,
-      discount:discount.value,
-      total:total.value,
-      count:count.value,
-      categorie:categorie.value.toLowerCase(),
-    }
-    //count
-    if(title.value !='' && price.value !='' && categorie.value!='' && newPro.count<100){
-      if (mood === 'create') {
-        if (newPro.count > 1) {
-          for (let i = 0; i < newPro.count; i++) {
-            dataPro.push(newPro);
+submit.onclick = function() {
+  let countValue = +count.value || 1;
+
+  let newPro = {
+      title: title.value.toLowerCase(),
+      price: price.value,
+      taxes: taxes.value,
+      ads: ads.value,
+      discount: discount.value,
+      total: total.value,
+      count: countValue,
+      categorie: categorie.value.toLowerCase(),
+  }
+
+  if(title.value != '' && price.value != '' && categorie.value != '' && countValue < 100) {
+      if(mood === 'create') {
+          for(let i = 0; i < newPro.count; i++) {
+              dataPro.push({...newPro});
           }
-        } else {
-          dataPro.push(newPro);
-        }
       } else {
-        dataPro[tmp] = newPro;
-        mood='create';
-        submit.innerHTML="Create";
-        count.style.display="block";
+          dataPro[tmp] = newPro;
+          mood = 'create';
+          submit.innerHTML = "Create";
+          count.style.display = "block";
       }
       clearData();
-    }
-    
-    
-    localStorage.setItem('product', JSON.stringify(dataPro));
-    
-    showData();
+  } else {
+      alert("Please fill title, price, and category, and count < 100");
+      return;
   }
-  showData()
+
+  localStorage.setItem('product', JSON.stringify(dataPro));
+  showData();
+}
+
 
  
 //clear inputs
